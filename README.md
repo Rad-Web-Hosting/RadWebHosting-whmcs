@@ -1,9 +1,9 @@
 # Domains-Reseller-whmcs
-Domains Reseller module for WHMCS to integrate API functionality for resellers directly into their WHMCS installations. Simplifies the automation of registering, transferring, and renewing domain name registrations. RAD WEB HOSTING account is required.
+Domains Reseller module for [WHMCS](http://www.whmcs.com) billing software to integrate API functionality for resellers directly into remote WHMCS installations. Simplifies the automation of registering, transferring, and renewing domain name registrations. Rad Web Hosting domain API account is required.
 
 After account creation, users gain access to the Domain API by siging up for a Domain Reseller account.
 
-<p align="center"><a href="https://radwebhosting.com" target="_blank"><img width="350" src="https://avatars0.githubusercontent.com/u/16030710?s=460&v=4" alt="RAD WEB HOSTING"></a></p>
+<p align="center"><a href="https://radwebhosting.com" target="_blank"><img width="350" src="https://avatars0.githubusercontent.com/u/16030710?s=460&v=4" alt="Rad Web Hosting"></a></p>
 
 ## About
 * This is a Domain Registrar module for WHMCS to integrate API functionality for Domains resellers, allowing them to remotely manage Rad Web Hosting domain names in remote WHMCS installation. This module also installs Client Area domain management functions for use by end-clients.
@@ -12,14 +12,14 @@ After account creation, users gain access to the Domain API by siging up for a D
 ## Prerequisites
 Please read the following system requirements for WHMCS Domain Reseller module:
 * Working WHMCS installation (v5.3+)
-* RAD WEB HOSTING API key
+* Rad Web Hosting API key
 
 Users can gain access to API key by signing up for a Domain Reseller account
 
 ## Installation
 1. Download the module
 2. Upload  to the WHMCS root directory (i.e. /home/user/whmcs ) and extract the files
-3. In WHMCS Admin area, navigate to Setup -> Products/Services -> Domain Registrars and activate the `radwebhosting` registrar
+3. In WHMCS Admin area, navigate to Setup -> Products/Services -> Domain Registrars and activate the `RadWebHosting` registrar
 4. Enter your API username and API secret. These can be obtained via your Hosting Dashboard.
 5. Add funds to your account. API domain registrations/transfers/renewals are paid using your existing account balance. PayPal, Credit Cards, and over 40 cryptocurrencies can be used for funding. $20 is the minimum funds allowed per transaction.
 
@@ -49,7 +49,7 @@ Users can gain access to API key by signing up for a Domain Reseller account
 * Get Available Credits
 * Get Version
 
-For full documentation, please visit the Rad Web Hosting Domain API documentation on the website.
+For full documentation, please visit the Rad Web Hosting [Domain API documentation](https://radwebhosting.com/client_area/knowledgebase/4/Domains-and-DNS) on the website.
 
 ## Help
 If you have any questions or problems please submit a [Domain Support Ticket](https://radwebhosting.com/client_area/submitticket.php?step=2&deptid=10).
