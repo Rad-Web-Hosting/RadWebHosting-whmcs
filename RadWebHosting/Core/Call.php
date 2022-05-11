@@ -53,7 +53,7 @@ abstract class Call
      * @param Configuration $config
      * @param $params
      */
-    public function __construct(Configuration $config, $params)
+    public function __construct(Configuration $config, $params = [])
     {
         $this->config = $config;
         $this->params = $params;
@@ -72,9 +72,16 @@ abstract class Call
             $url = "{$this->config->ApiEndpoint}/{$this->action}";
 
             $client = new Client();
-            $request = $client->createRequest($this->type, $url, ["headers" => $this->config->getAuthHeaders(), $this->getParamKeyName() => $this->params]);
-
-            $output = $client->send($request)->getBody()->getContents();
+            if($this->isWhmcsVersionHigherOrEqual('8.0.0'))
+            {
+                $params = $this->type === self::TYPE_POST ? $this->params : [];
+                $request = $client->request($this->type, $url, ["headers" => $this->config->getAuthHeaders(), "form_params" => $params]);
+                $output = $request->getBody()->getContents();
+            } else
+            {
+                $request = $client->createRequest($this->type, $url, ["headers" => $this->config->getAuthHeaders(), $this->getParamKeyName() => $this->params]);
+                $output = $client->send($request)->getBody()->getContents();
+            }
         }
         catch (\GuzzleHttp\Exception\ClientException $ex)
         {
@@ -140,5 +147,18 @@ abstract class Call
         }
 
         return $result;
+    }
+
+    private function isWhmcsVersionHigherOrEqual($toCompare)
+    {
+        if (isset($GLOBALS['CONFIG']['Version']))
+        {
+            $version = explode('-', $GLOBALS['CONFIG']['Version']);
+            return (version_compare($version[0], $toCompare, '>='));
+        }
+
+        global $whmcs;
+
+        return (version_compare($whmcs->getVersion()->getRelease(), $toCompare, '>='));
     }
 }

@@ -8,7 +8,7 @@ include_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARA
 new \ModulesGarden\DomainsReseller\Registrar\RadWebHosting\Core\Loader(__DIR__);
 
 /**
- * 
+ *
  * @param array $params
  * @return array $return
  */
@@ -21,21 +21,21 @@ function RadWebHosting_getConfigArray()
         ],
         "Description"  => [
             "Type"  => "System",
-            "Value" => "WHMCS registrar module for Rad Web Hosting Domain API integration."
+            "Value" => "Don&#039;t have a Rad Web Hosting Account yet? Get one here: radwebhosting.com/domains-reseller"
         ],
-        "Username"    => [
+        "Username"     => [
             "FriendlyName" => "API Username",
             "Type"         => "text",
             "Size"         => "40",
             "Description"  => "Enter your email used in the main WHMCS"
         ],
-        "ApiKey"      => [
+        "ApiKey"       => [
             "FriendlyName" => "API Key",
             "Type"         => "text",
             "Size"         => "40",
             "Description"  => "Enter your API key received from provider"
         ],
-        "ApiEndpoint" => [
+        "ApiEndpoint"  => [
             "FriendlyName" => "API Endpoint",
             "Type"         => "text",
             "Size"         => "40",
@@ -49,552 +49,635 @@ function RadWebHosting_getConfigArray()
 
 /**
  * Register Domain
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_RegisterDomain($params)
 {
     $postfields =
-    [
-        "domain"        => $params["domainname"],
-        "regperiod"     => (int)$params["regperiod"],
-        "domainfields"  => base64_encode(serialize($params["additionalfields"])),
-        "originalvars"  => $params,
-        "addons" =>
         [
-            "dnsmanagement"     => $params['dnsmanagement']     ? 1 : 0,
-            "emailforwarding"   => $params['emailforwarding']   ? 1 : 0,
-            "idprotection"      => $params['idprotection']      ? 1 : 0,
-        ],
-        "nameservers" =>
-        [
-            $params["ns1"],
-            $params["ns2"],
-            $params["ns3"],
-            $params["ns4"],
-            $params["ns5"],
-        ],
-        "contacts" =>
-        [
-            "registrant" =>
-            [
-                'firstname'     => $params["firstname"],
-                'lastname'      => $params["lastname"],
-                'fullname'      => $params["firstname"]." ".$params["lastname"],
-                'companyname'   => $params["companyname"],
-                'email'         => $params["email"],
-                'address1'      => $params["address1"],
-                'address2'      => $params["address2"],
-                'city'          => $params["city"],
-                'state'         => $params["state"],
-                'zipcode'       => $params["zipcode"],
-                'country'       => $params["country"],
-                'phonenumber'   => $params["phonenumber"],
-            ],
-
-            "tech" =>
-            [
-                "firstname"     => $params["adminfirstname"],
-                "lastname"      => $params["adminlastname"],
-                'fullname'      => $params["adminfirstname"]." ".$params["adminlastname"],
-                "companyname"   => $params["admincompanyname"],
-                "email"         => $params["adminemail"],
-                "address1"      => $params["adminaddress1"],
-                "address2"      => $params["adminaddress2"],
-                "city"          => $params["admincity"],
-                "fullstate"     => $params["adminfullstate"],
-                "postcode"      => $params["adminpostcode"],
-                "phonenumber"   => $params["adminphonenumber"],
-                "phonecc"       => $params["adminphonecc"],
-                "phonenumber"   => $params["adminfullphonenumber"],
-            ],
-        ]
-    ];
-
-    $call = new Calls\RegisterDomain(Configuration::create($params), $postfields);
-    $result = $call->process();
-    
-    return $result;
+            "domain"       => $params["domainname"],
+            "regperiod"    => (int)$params["regperiod"],
+            "domainfields" => base64_encode(serialize($params["additionalfields"])),
+            "addons"       =>
+                [
+                    "dnsmanagement"   => $params['dnsmanagement'] ? 1 : 0,
+                    "emailforwarding" => $params['emailforwarding'] ? 1 : 0,
+                    "idprotection"    => $params['idprotection'] ? 1 : 0,
+                ],
+            "nameservers"  =>
+                [
+                    $params["ns1"],
+                    $params["ns2"],
+                    $params["ns3"],
+                    $params["ns4"],
+                    $params["ns5"],
+                ],
+            "contacts"     =>
+                [
+                    "registrant" =>
+                        [
+                            'firstname'   => $params["firstname"],
+                            'lastname'    => $params["lastname"],
+                            'companyname' => $params["companyname"],
+                            'email'       => $params["email"],
+                            'address1'    => $params["address1"],
+                            'address2'    => $params["address2"],
+                            'city'        => $params["city"],
+                            'state'       => $params["state"],
+                            'postcode'    => $params["postcode"],
+                            'country'     => $params["country"],
+                            'phonenumber' => $params["phonenumber"],
+                            'tax_id'      => $params['tax_id']
+                        ],
+                ]
+        ];
+    try
+    {
+        $call = new Calls\RegisterDomain(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Transfer Domain
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_TransferDomain($params)
 {
     $postfields =
-    [
-        "domain"        => $params["domainname"],
-        "regperiod"     => (int)$params["regperiod"],
-        "eppcode"       => $params["eppcode"],
-        'domainfields'  => base64_encode(serialize($params["additionalfields"])),
-        "addons" =>
         [
-            "dnsmanagement"     => $params['dnsmanagement']     ? 1 : 0,
-            "emailforwarding"   => $params['emailforwarding']   ? 1 : 0,
-            "idprotection"      => $params['idprotection']      ? 1 : 0,
-        ],
-        "nameservers" =>
-        [
-            $params["ns1"],
-            $params["ns2"],
-            $params["ns3"],
-            $params["ns4"],
-            $params["ns5"],
-        ],
-        "contacts" =>
-        [
-            "registrant" =>
-            [
-                'firstname'     => $params["firstname"],
-                'lastname'      => $params["lastname"],
-                'fullname'      => $params["firstname"]." ".$params["lastname"],
-                'companyname'   => $params["companyname"],
-                'email'         => $params["email"],
-                'address1'      => $params["address1"],
-                'address2'      => $params["address2"],
-                'city'          => $params["city"],
-                'state'         => $params["state"],
-                'zipcode'       => $params["zipcode"],
-                'country'       => $params["country"],
-                'phonenumber'   => $params["phonenumber"],
-            ],
+            "domain"       => $params["domainname"],
+            "regperiod"    => (int)$params["regperiod"],
+            "eppcode"      => $params["eppcode"],
+            'domainfields' => base64_encode(serialize($params["additionalfields"])),
+            "addons"       =>
+                [
+                    "dnsmanagement"   => $params['dnsmanagement'] ? 1 : 0,
+                    "emailforwarding" => $params['emailforwarding'] ? 1 : 0,
+                    "idprotection"    => $params['idprotection'] ? 1 : 0,
+                ],
+            "nameservers"  =>
+                [
+                    $params["ns1"],
+                    $params["ns2"],
+                    $params["ns3"],
+                    $params["ns4"],
+                    $params["ns5"],
+                ],
+            "contacts"     =>
+                [
+                    "registrant" =>
+                        [
+                            'firstname'   => $params["firstname"],
+                            'lastname'    => $params["lastname"],
+                            'companyname' => $params["companyname"],
+                            'email'       => $params["email"],
+                            'address1'    => $params["address1"],
+                            'address2'    => $params["address2"],
+                            'city'        => $params["city"],
+                            'state'       => $params["state"],
+                            'postcode'    => $params["postcode"],
+                            'country'     => $params["country"],
+                            'phonenumber' => $params["phonenumber"],
+                            'tax_id'      => $params['tax_id']
+                        ],
+                ]
+        ];
 
-            "tech" =>
-            [
-                "firstname"     => $params["adminfirstname"],
-                "lastname"      => $params["adminlastname"],
-                'fullname'      => $params["adminfirstname"]." ".$params["adminlastname"],
-                "companyname"   => $params["admincompanyname"],
-                "email"         => $params["adminemail"],
-                "address1"      => $params["adminaddress1"],
-                "address2"      => $params["adminaddress2"],
-                "city"          => $params["admincity"],
-                "fullstate"     => $params["adminfullstate"],
-                "postcode"      => $params["adminpostcode"],
-                "phonenumber"   => $params["adminphonenumber"],
-                "phonecc"       => $params["adminphonecc"],
-                "phonenumber"   => $params["adminfullphonenumber"],
-            ],
-        ]
-    ];
-
-    $call = new Calls\TransferDomain(Configuration::create($params), $postfields);
-    $result = $call->process();
-    
-    return $result;
+    try
+    {
+        $call = new Calls\TransferDomain(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Renew Domain
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_RenewDomain($params)
 {
     $postfields =
-    [
-        "domain"     => $params["domainname"],
-        "regperiod"  => (int)$params["regperiod"],
-        "addons" =>
         [
-            "dnsmanagement"     => $params['dnsmanagement']     ? 1 : 0,
-            "emailforwarding"   => $params['emailforwarding']   ? 1 : 0,
-            "idprotection"      => $params['idprotection']      ? 1 : 0,
-        ],
-    ];
+            "domain"    => $params["domainname"],
+            "regperiod" => (int)$params["regperiod"],
+            "addons"    =>
+                [
+                    "dnsmanagement"   => $params['dnsmanagement'] ? 1 : 0,
+                    "emailforwarding" => $params['emailforwarding'] ? 1 : 0,
+                    "idprotection"    => $params['idprotection'] ? 1 : 0,
+                ],
+        ];
 
-    $call = new Calls\RenewDomain(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+    try
+    {
+        $call = new Calls\RenewDomain(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Get name servers
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_GetNameservers($params)
 {
     $postfields =
-    [
-        "domain" => $params["domainname"]
-    ];
+        [
+            "domain" => $params["domainname"]
+        ];
 
-    $call = new Calls\GetNameServers(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+    try
+    {
+        $call = new Calls\GetNameServers(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Save nameservers
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_SaveNameservers($params)
 {
     $postfields =
-    [
-        "domain" => $params["domainname"],
+        [
+            "domain" => $params["domainname"],
 
-        "ns1" => $params["ns1"],
-        "ns2" => $params["ns2"],
-        "ns3" => $params["ns3"],
-        "ns4" => $params["ns4"],
-        "ns5" => $params["ns5"],
-    ];
+            "ns1" => $params["ns1"],
+            "ns2" => $params["ns2"],
+            "ns3" => $params["ns3"],
+            "ns4" => $params["ns4"],
+            "ns5" => $params["ns5"],
+        ];
 
-    $call = new Calls\SaveNameServers(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+    try
+    {
+        $call = new Calls\SaveNameServers(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Release Domain
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_ReleaseDomain($params)
 {
     $postfields =
-    [
-        "domain"        => $params["domainname"],
-        "transfertag"   => $params["transfertag"]
-    ];
+        [
+            "domain"      => $params["domainname"],
+            "transfertag" => $params["transfertag"]
+        ];
 
-    $call = new Calls\ReleaseDomain(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+    try
+    {
+        $call = new Calls\ReleaseDomain(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Get EPP Code
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_GetEPPCode($params)
 {
     $postfields =
-    [
-        "domain" => $params["domainname"],
-    ];
+        [
+            "domain" => $params["domainname"],
+        ];
 
-    $call = new Calls\GetEppCode(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+    try
+    {
+        $call = new Calls\GetEppCode(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Get Contact Details
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_GetContactDetails($params)
 {
     $postfields =
-    [
-        "domain" => $params["domainname"],
-    ];
-
-    $call = new Calls\GetContactDetails(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+        [
+            "domain" => $params["domainname"],
+        ];
+    try
+    {
+        $call   = new Calls\GetContactDetails(Configuration::create($params), $postfields);
+        $result = $call->process();
+        $new    = [];
+        foreach ($result as $key => $value)
+        {
+            $new[$key] = [];
+            foreach ($value as $detail => $info)
+            {
+                $new[$key][str_replace('_', ' ', $detail)] = $info;
+            }
+        }
+        return $new;
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Save Contact Details
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_SaveContactDetails($params)
 {
     $postfields =
-    [
-        "domain"            => $params["domainname"],
-        "contactdetails"    => $params["contactdetails"]
-    ];
+        [
+            "domain"         => $params["domainname"],
+            "contactdetails" => $params["contactdetails"]
+        ];
 
-    $call = new Calls\SaveContactDetails(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+    try
+    {
+        $call = new Calls\SaveContactDetails(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Get Lock Status
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_GetRegistrarLock($params)
 {
     $postfields =
-    [
-        "domain" => $params["domainname"],
-    ];
+        [
+            "domain" => $params["domainname"],
+        ];
 
-    $call = new Calls\GetRegistrarLock(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+    try
+    {
+        $call = new Calls\GetRegistrarLock(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Update Lock Status
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_SaveRegistrarLock($params)
 {
     $postfields =
-    [
-        "domain"        => $params["domainname"],
-        "lockstatus"    => $params["lockenabled"]
-    ];
+        [
+            "domain"     => $params["domainname"],
+            "lockstatus" => $params["lockenabled"]
+        ];
 
-    $call = new Calls\SaveRegistrarLock(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+    try
+    {
+        $call = new Calls\SaveRegistrarLock(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Get DNS Records
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_GetDNS($params)
 {
     $postfields =
-    [
-        "domain" => $params["domainname"],
-    ];
+        [
+            "domain" => $params["domainname"],
+        ];
 
-    $call = new Calls\GetDns(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+    try
+    {
+        $call = new Calls\GetDns(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Save DNS Records
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_SaveDNS($params)
 {
     $postfields =
-    [
-        "domain"        => $params["domainname"],
-        "dnsrecords"    => $params["dnsrecords"]
-    ];
+        [
+            "domain"     => $params["domainname"],
+            "dnsrecords" => $params["dnsrecords"]
+        ];
 
-    $call = new Calls\SaveDns(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+    try
+    {
+        $call = new Calls\SaveDns(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Register Name Server
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_RegisterNameserver($params)
 {
     $postfields =
-    [
-        "domain" => $params["domainname"],
+        [
+            "domain" => $params["domainname"],
 
-        "nameserver" => $params["nameserver"],
-        "ipaddress"  => $params["ipaddress"],
-    ];
+            "nameserver" => $params["nameserver"],
+            "ipaddress"  => $params["ipaddress"],
+        ];
 
-    $call = new Calls\RegisterNameServer(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+    try
+    {
+        $call = new Calls\RegisterNameServer(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Update Name Server
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_ModifyNameserver($params)
 {
     $postfields =
-    [
-        "domain" => $params["domainname"],
+        [
+            "domain" => $params["domainname"],
 
-        "nameserver"        => $params["nameserver"],
-        "currentipaddress"  => $params["currentipaddress"],
-        "newipaddress"      => $params["newipaddress"],
-    ];
+            "nameserver"       => $params["nameserver"],
+            "currentipaddress" => $params["currentipaddress"],
+            "newipaddress"     => $params["newipaddress"],
+        ];
 
-    $call = new Calls\ModifyNameServer(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+    try
+    {
+        $call = new Calls\ModifyNameServer(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Delete Name Server
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_DeleteNameserver($params)
 {
     $postfields =
-    [
-        "domain"        => $params["domainname"],
-        "nameserver"    => $params["nameserver"],
-    ];
+        [
+            "domain"     => $params["domainname"],
+            "nameserver" => $params["nameserver"],
+        ];
 
-    $call = new Calls\DeleteNameServer(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+    try
+    {
+        $call = new Calls\DeleteNameServer(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Delete Domain
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_RequestDelete($params)
 {
     $postfields =
-    [
-        "domain" => $params["domainname"]
-    ];
+        [
+            "domain" => $params["domainname"]
+        ];
 
-    $call = new Calls\RequestDelete(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+    try
+    {
+        $call = new Calls\RequestDelete(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Synchronize transfer domain
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_TransferSync($params)
 {
     $postfields =
-    [
-        "domain" => "{$params["sld"]}.{$params["tld"]}"
-    ];
+        [
+            "domain" => "{$params["sld"]}.{$params["tld"]}"
+        ];
 
-    $call = new Calls\TransferSync(Configuration::create($params), $postfields);
-    $result = $call->process();
-    
-    return $result;
+    try
+    {
+        $call = new Calls\TransferSync(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Synchronize Registered Domains
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_Sync($params)
 {
     $postfields =
-    [
-        "domain" => "{$params["sld"]}.{$params["tld"]}"
-    ];
+        [
+            "domain" => "{$params["sld"]}.{$params["tld"]}"
+        ];
 
-    $call = new Calls\Sync(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+    try
+    {
+        $call = new Calls\Sync(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Get list of emails aliases
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_GetEmailForwarding($params)
 {
     $postfields =
-    [
-        "domain" => $params["domainname"]
-    ];
+        [
+            "domain" => $params["domainname"]
+        ];
 
-    $call = new Calls\GetEmailForwarding(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+    try
+    {
+        $call = new Calls\GetEmailForwarding(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * Save list of emails aliases
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_SaveEmailForwarding($params)
 {
     $postfields =
-    [
-        "domain"    => $params["domainname"],
-        "prefix"    => $params["prefix"],
-        "forwardto" => $params["forwardto"]
-    ];
+        [
+            "domain"    => $params["domainname"],
+            "prefix"    => $params["prefix"],
+            "forwardto" => $params["forwardto"]
+        ];
 
-    $call = new Calls\SaveEmailForwarding(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+    try
+    {
+        $call = new Calls\SaveEmailForwarding(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
  * This function is called when the ID Protection setting is toggled on or off
- * 
+ *
  * @param array $params
  * @return array $return
  */
 function RadWebHosting_IDProtectionToggle($params)
 {
     $postfields =
-    [
-        "domain" => $params["domainname"],
-        "status" => $params["protectenable"]
-    ];
+        [
+            "domain" => $params["domainname"],
+            "status" => $params["protectenable"]
+        ];
 
-    $call = new Calls\ToggleIdProtect(Configuration::create($params), $postfields);
-    $result = $call->process();
-
-    return $result;
+    try
+    {
+        $call = new Calls\ToggleIdProtect(Configuration::create($params), $postfields);
+        return $call->process();
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
 
 /**
@@ -618,17 +701,24 @@ function RadWebHosting_IDProtectToggle($params)
 function RadWebHosting_CheckAvailability($params)
 {
     $postfields =
-    [
-        "searchTerm"            => $params["searchTerm"],
-        "punyCodeSearchTerm"    => $params["punyCodeSearchTerm"],
-        "tldsToInclude"         => $params["tldsToInclude"],
-        "isIdnDomain"           => $params['isIdnDomain'],
-        "premiumEnabled"        => $params['premiumEnabled'],
-        "isWhmcs"               => 1
-    ];
+        [
+            "searchTerm"         => $params["searchTerm"],
+            "punyCodeSearchTerm" => $params["punyCodeSearchTerm"],
+            "tldsToInclude"      => $params["tldsToInclude"],
+            "isIdnDomain"        => $params['isIdnDomain'],
+            "premiumEnabled"     => $params['premiumEnabled'],
+            "isWhmcs"            => 1
+        ];
 
-    $call = new Calls\CheckAvailability(Configuration::create($params), $postfields);
-    $result = $call->process();
+    try
+    {
+        $call = new Calls\CheckAvailability(Configuration::create($params), $postfields);
+        $result = $call->process();
 
-    return unserialize($result);
+        return unserialize($result);
+    }
+    catch (\Exception $e)
+    {
+        return ['error' => $e->getMessage()];
+    }
 }
