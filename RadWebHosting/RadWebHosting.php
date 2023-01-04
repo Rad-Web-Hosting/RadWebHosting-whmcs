@@ -21,7 +21,7 @@ function RadWebHosting_getConfigArray()
         ],
         "Description"  => [
             "Type"  => "System",
-            "Value" => "Don&#039;t have a Rad Web Hosting Account yet? Get one here: radwebhosting.com/domains-reseller"
+            "Value" => "<a target=\"_blank\" href=\"https://radwebhosting.com\">Rad Web Hosting</a>'s official maintained white-label Registrar Module."
         ],
         "Username"     => [
             "FriendlyName" => "API Username",
