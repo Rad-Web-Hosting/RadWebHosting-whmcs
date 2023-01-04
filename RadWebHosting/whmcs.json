@@ -1,10 +1,11 @@
 {
   "schema": "1.0",
-  "type": "whmcs-registrars",
+  "type": "whmcs-addons",
   "name": "RadWebHosting",
+  "license": "proprietary",
   "category": "domains",
   "description": {
-    "name": "Rad Web Hosting",
+    "name": "RadWebHosting",
     "tagline": "Industry-leading domain registrar with over 500+ TLDs available.",
     "long": "Rad Web Hosting powers the world\u2019s largest cloud platform. With thousands of websites hosted and thousands of domain names under management, Rad Web Hosting is the registrar of choice for more WHMCS resellers.\n\nNow with the Rad Web Hosting module for WHMCS, you can resell domains using the Rad Web Hosting domain reseller platform. To get started, download the module from the WHMCS Marketplace using the link to the right.\n\nSignup for a Rad Web Hosting account @ [https:\/\/radwebhosting.com\/domain-reseller](https:\/\/radwebhosting.com\/domain-reseller)\n\n## Reasons to Choose Rad Web Hosting\n* Trusted partner and champion of our customers.\n* Large, high growth business with attractive unit economics.\n* Industry-leading products built on a single cloud platform & distinctive customer care.\n* Proven growth strategy with team purpose built to execute.\n* Market Leading Wholesale Domain Pricing."
   },

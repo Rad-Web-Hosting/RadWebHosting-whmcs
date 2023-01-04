@@ -2,6 +2,7 @@
 
 use ModulesGarden\DomainsReseller\Registrar\RadWebHosting\Calls;
 use ModulesGarden\DomainsReseller\Registrar\RadWebHosting\Core\Configuration;
+use ModulesGarden\DomainsReseller\Registrar\RadWebHosting\Helpers\ResultsListFactory;
 
 //Loader
 include_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . "Loader.php";
@@ -210,7 +211,12 @@ function RadWebHosting_GetNameservers($params)
     try
     {
         $call = new Calls\GetNameServers(Configuration::create($params), $postfields);
-        return $call->process();
+
+        $result = $call->process();
+        unset($result['success']);
+        unset($result['message']);
+
+        return $result;
     }
     catch (\Exception $e)
     {
@@ -714,11 +720,15 @@ function RadWebHosting_CheckAvailability($params)
     {
         $call = new Calls\CheckAvailability(Configuration::create($params), $postfields);
         $result = $call->process();
-
-        return unserialize($result);
+        return  ResultsListFactory::createResultsList($result);
     }
     catch (\Exception $e)
     {
-        return ['error' => $e->getMessage()];
-    }
+        \logModuleCall(
+            'RadWebHosting',
+            'DomainLookup',
+            $postfields,
+            ['error' => $e->getMessage()]
+        );
+        return  ResultsListFactory::createResultsList([]);    }
 }

@@ -69,13 +69,15 @@ class Configuration
      */
     public function getAuthHeaders()
     {
-        $time = gmdate("y-m-d H");
+        $timestamp = time();
+        $time = gmdate("y-m-d H", $timestamp);
         $token = base64_encode(hash_hmac("sha256", $this->ApiKey, "{$this->Username}:$time"));
 
         return
         [
             "username"  => $this->Username,
-            "token"     => $token
+            "token"     => $token,
+            "timestamp" => $timestamp,
         ];
     }
 }
