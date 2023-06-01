@@ -1,0 +1,12 @@
+{
+  "schema": "1.0",
+  "type": "whmcs-addons",
+  "name": "RadWebHosting",
+  "license": "proprietary",
+  "category": "domains",
+  "description": {
+    "name": "RadWebHosting",
+    "tagline": "",
+    "long": "Don&#039;t have a Rad Web Hosting Account yet? Get one here: https://radwebhosting.com/domains-reseller	"
+  }
+}
