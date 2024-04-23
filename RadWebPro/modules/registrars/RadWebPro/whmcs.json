@@ -1,0 +1,33 @@
+{
+  "schema": "1.0",
+  "type": "whmcs-registrars",
+  "name": "radwebpro",
+  "license": "proprietary",
+  "category": "registrar",
+  "description": {
+    "name": "RadWebPro",
+    "tagline": "Leading domain registrar module for WHMCS.",
+    "long": "RadWebPro registrar module enables seamless synchronization of reselling over 500 TLDs and provides convenient and robust domain management experience within client area account.\n[Click here to create an account](https://radwebhosting.com/domain-reseller)",
+    "features": [
+      "500+ TLDs to Resell to Your Customers",
+	  "Fully White-Labeled Reselling Options",
+      "Top-rated WHMCS registrar module in the Marketplace"
+    ]
+  },
+  "logo": {
+    "filename": "logo.png"
+  },
+  "support": {
+    "homepage": "https:\/\/radwebhosting.com\/", 
+    "learn_more": "https:\/\radwebhosting.com\/domain-reseller", 
+    "email": "support@radwebhosting.com", 
+    "support_url": "https:\/\/radwebhosting.com\/support",
+    "docs_url": "https:\/\/radwebhosting.com\/client_area\/knowledgebase\/21\/Domains-API"
+  },
+  "authors": [
+    {
+      "name": "Rad Web Hosting",
+      "homepage": "https:\/\/radwebhosting.com\/"
+    }
+  ]
+}
