@@ -26,7 +26,7 @@ function RadWebPro_getConfigArray()
         ],
         "Description"  => [
             "Type"  => "System",
-            "Value" => "Offer domain registration, transfer, and renewal services for over 500 TLDs including the ngTLDs as well as ccTLDs from around the globe."
+            "Value" => "<a target=\"_blank\" href=\"https://radwebhosting.com\">Rad Web Hosting</a>'s official maintained white-label Registrar Module. Offer domain registration, transfer, and renewal services for over 500 TLDs including the ngTLDs as well as ccTLDs from around the globe."
         ],
         "Username"     => [
             "FriendlyName" => "API Username",
