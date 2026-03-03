@@ -2,6 +2,7 @@
   "schema": "1.0",
   "type": "whmcs-registrars",
   "name": "radwebpro",
+  "version": "5.0.0",
   "license": "proprietary",
   "category": "registrar",
   "description": {
@@ -13,6 +14,9 @@
 	  "Fully White-Labeled Reselling Options",
       "Top-rated WHMCS registrar module in the Marketplace"
     ]
+  },
+  "marketplace": {
+    "url": "https:\/\/marketplace.whmcs.com\/product\/3983"
   },
   "logo": {
     "filename": "logo.png"

@@ -12,6 +12,8 @@ class Configuration
     const FIELD_API_KEY      = "ApiKey";
     const FIELD_API_ENDPOINT = "ApiEndpoint";
 
+    const USER_AGENT         = "ModulesGarden - Domains Reseller";
+
     /**
      * @var mixed
      */
@@ -78,6 +80,7 @@ class Configuration
             "username"  => $this->Username,
             "token"     => $token,
             "timestamp" => $timestamp,
+            "User-Agent" => self::USER_AGENT,
         ];
     }
 }
